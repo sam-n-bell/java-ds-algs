@@ -86,6 +86,25 @@ public class LinkedList {
         }
     }
 
+    public void removeNodeAtIndex(int index) {
+        if (this.length -1 < index) {
+            System.out.println("The list is not long enough to insert at index " + index + ". Only " + this.length + " nodes currently.");
+        } else {
+            int count = 0;
+            ListNode current = this.head;
+            ListNode previous = null;
+            while (current != null && count <= index) {
+                if (count == index) {
+                    previous.setNext(current.getNext());
+                } else {
+                    previous = current;
+                    current = current.getNext();
+                }
+                count++;
+            }
+        }
+    }
+
     public void reverseList() {
         ListNode previous = null;
         ListNode current = this.head;

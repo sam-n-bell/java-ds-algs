@@ -12,5 +12,7 @@ public class main {
         linkedList.printList();
         linkedList.insertNodeAtIndex(13, 2);
         linkedList.printList();
+        linkedList.removeNodeAtIndex(2);
+        linkedList.printList();
     }
 }
