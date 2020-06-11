@@ -20,28 +20,13 @@ public class LinkedList {
         this.length++;
     }
 
-    public void insertAtHead(ListNode newNode) {
-        ListNode oldHead = this.head;
-        this.head = newNode;
-        this.head.setNext(oldHead);
-        this.length++;
-    }
-
-    public void appendNode(ListNode newNode) {
-        ListNode current = this.head;
-        while (current.getNext() != null) {
-            current = current.getNext();
-        }
-        current.setNext(newNode);
-        this.length++;
-    }
-
     public void appendNode(int val) {
-        ListNode current = this.head;
-        while (current.getNext() != null) {
-            current = current.getNext();
+        if (this.head == null) {
+            this.head = new ListNode(val);
+        } else {
+            ListNode lastNode = this.getNodeAtIndex(this.length - 1);
+            lastNode.setNext(new ListNode(val));
         }
-        current.setNext(val);
         this.length++;
     }
 
@@ -49,6 +34,7 @@ public class LinkedList {
         if (this.length -1 < index) {
             System.out.println("The list is not long enough to insert at index " + index + ". Only " + this.length + " nodes currently.");
         } else {
+            /**
             int count = 0;
             ListNode newNode = new ListNode(val);
             ListNode current = this.head;
@@ -63,25 +49,26 @@ public class LinkedList {
                 }
                 count++;
             }
-        }
-    }
+             **/
+            ListNode newNode = new ListNode(val);
 
-    public void insertNodeAtIndex(ListNode newNode, int index) {
-        if (this.length - 1 < index) {
-            System.out.println("The list is not long enough to insert at index " + index + ". Only " + this.length + " nodes currently.");
-        } else {
-            int count = 0;
-            ListNode current = this.head;
             ListNode previous = null;
-            while (current != null && count <= index) {
-                if (count == index) {
-                    previous.setNext(newNode);
-                    newNode.setNext(current);
-                } else {
-                    previous = current;
-                    current = current.getNext();
-                }
-                count++;
+            if (index > 0) {
+                // can get previous node
+                previous = this.getNodeAtIndex(index - 1);
+            }
+            ListNode next = null;
+            if (index < this.length) {
+                // can get next node (or null)
+                next = this.getNodeAtIndex(index);
+            }
+            newNode.setNext(next);
+            if (previous == null) {
+                // index was 0
+                this.head = newNode;
+            } else {
+                // index was end of the list or between 0 and last node
+                previous.setNext(newNode);
             }
         }
     }
@@ -90,6 +77,7 @@ public class LinkedList {
         if (this.length -1 < index) {
             System.out.println("The list is not long enough to insert at index " + index + ". Only " + this.length + " nodes currently.");
         } else {
+            /** old way of doing this
             int count = 0;
             ListNode current = this.head;
             ListNode previous = null;
@@ -102,6 +90,29 @@ public class LinkedList {
                 }
                 count++;
             }
+            **/
+
+            // new way
+
+            ListNode previous = null;
+            if (index > 0) {
+                // can get previous node
+                previous = this.getNodeAtIndex(index - 1);
+            }
+            ListNode next = null;
+            if (index < this.length) {
+                // can get next node (or null)
+                next = this.getNodeAtIndex(index + 1);
+            }
+
+            if (previous == null) {
+                // index was 0
+                this.head = next;
+            } else {
+                // index was end of the list or between 0 and last node
+                previous.setNext(next);
+            }
+
         }
     }
 
@@ -129,6 +140,19 @@ public class LinkedList {
             current = current.getNext();
         }
         System.out.println(sb.toString());
+    }
+
+    public ListNode getNodeAtIndex(int index) {
+        if (index > this.length - 1) {
+            throw new IndexOutOfBoundsException();
+        }
+        int count = 0;
+        ListNode current = this.head;
+        while (count < index) {
+            current=current.getNext();
+            count++;
+        }
+        return current;
     }
 
     public int getLength() {
